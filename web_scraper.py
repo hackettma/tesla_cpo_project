@@ -1,11 +1,33 @@
 import time
 from datetime import date, datetime
 from selenium import webdriver
-import sqlite3 as lite
+from sqlalchemy import create_engine
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import Column, Integer, String, Datetime
+from sqlalchemy import sessionmaker
 import sys
 
+Base = declarative_base()
+engine = create_engine('postgresql://%s:%s@localhost:5432/cars')
+
+class Car(Base):
+	__tablename__ = 'Cars'
+	Id = Column(String, primary_key=True)
+	Created_at =  Column(Datetime)
+	Last_Update = Column(Datetime)
+	Status = Column(String)
+	Location = Column(String)
+	Year = Column(Integer)
+	Model = Column(String)
+	Mileage = Column(Integer)
+	Price = Column(Integer)
+	Paint = Column(String)
+	Interior = Column(String)
+	Roof = Column(String)
+	Wheel = Column(String)
+
 start = time.time()
-path_to_chromedriver = '\Users\michael.hackett\Documents\Personal\Selenium\chromedriver'
+path_to_chromedriver = '/Users/davidhackett/Documents/Programming/Scraper/Selenium/chromedriver'
 browser = webdriver.Chrome(executable_path = path_to_chromedriver)
 
 car_list = []
@@ -26,21 +48,24 @@ for option in options:
 				divs = item.find_elements_by_tag_name('div')
 				car_id = interim[5]
 				car_model = divs[1].get_attribute("class")
-				car_mileage = float("".join(interim[2].split(',')))
+				car_mileage = int("".join(interim[2].split(',')))
 				car_year = interim[0]
-				car_price = float(item.find_element_by_class_name('total_price').get_attribute("value"))
+				car_price = int(item.find_element_by_class_name('total_price').get_attribute("value"))
 				car_paint = item.get_attribute("data-paint")
 				car_interior = item.get_attribute("data-interior")
 				car_roof = item.get_attribute("data-roof")
 				car_wheel = item.get_attribute("data-wheel")
-				car_list.append((car_id, now, now, 'Active', option.text, car_year, car_model, car_mileage, car_price, car_paint, car_interior, car_roof, car_wheel))
+				car_list.append((car_id, now, now, 'Active', option.text, car_year, car_model, 
+					car_mileage, car_price, car_paint, car_interior, car_roof, car_wheel))
 				
 browser.quit()
 
+Session = sessionmaker(bind=engine)
+session = Session()
 
 
-
-con = lite.connect('C:/Users/michael.hackett/Documents/Personal/Selenium/temp.db', detect_types=lite.PARSE_DECLTYPES|lite.PARSE_COLNAMES)
+'''con = lite.connect('temp.db', 
+		detect_types=lite.PARSE_DECLTYPES|lite.PARSE_COLNAMES)
 
 
 with con:
@@ -64,9 +89,9 @@ with con:
 
 	cur.execute("UPDATE Cars SET Status=? WHERE Last_Update<>? AND Status=?", ('Inactive', now, 'Active'))
 	sold_count = cur.rowcount
-
+'''
 log_text = str(now) + ": " +"Total Cars Found: %d, %d updated, %d created, %d sold \n"  %(len(car_list), update_count, added_count, sold_count)
-f = open('C:/Users/michael.hackett/Documents/Personal/Selenium/scraper_log.txt', 'a')
+f = open('scraper_log.txt', 'a')
 f.write(log_text)
 f.close()
 print log_text
