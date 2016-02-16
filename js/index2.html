@@ -1,0 +1,126 @@
+<!-- index.html -->
+
+    <h3> Welcome to the Unofficial Tesla Certified Pre-owned Search Engine</h3>
+    <form >
+    <div id= "FirstRow">
+    <select name=Model ng-model="filter.Model">
+      <option value="Any">Any Model</option>
+      <option value="BT60">60 RWD</option>
+      <option value="BT70">70 RWD</option>
+      <option value="BT70D">70 AWD</option>
+      <option value="BT85">85 RWD</option>
+      <option value="BT85D">85 AWD</option>
+      <option value="BT90">90 RWD</option>
+      <option value="BT90D">90 AWD</option>
+      <option value="PBT85">P85 RWD</option>
+      <option value="P85plus">P85+ RWD</option>
+      <option value="P85D">P85 AWD</option>
+      <option value="P90D">P90 AWD</option>
+    </select>
+    <select name=Location ng-model="filter.Location">
+      <option value="Any">Any Location</option>
+      <option value="Atlanta">Atlanta</option>
+      <option value="Chicago">Chicago</option>
+      <option value="Florida">Florida</option>
+      <option value="Hawaii">Hawaii</option>
+      <option value="Los Angeles">Los Angeles</option>
+      <option value="New England">New England</option>
+      <option value="New York">New York</option>
+      <option value="Ohio">Ohio</option>
+      <option value="Orange County/San Diego">Orange County/San Diego</option>
+      <option value="Pennsylvania">Pennsylvania</option>
+      <option value="Rocky Mountains">Rocky Mountains</option>
+      <option value="San Francisco Bay Area">San Francisco Bay Area</option>
+      <option value="Seattle"Seattle</option>
+      <option value="Washington DC">Washington DC</option>
+    </select>
+    <select name=Year ng-model="filter.Year">
+      <option value="Any">Any Year</option>
+      <option value="2012">2012</option>
+      <option value="2013">2013</option>
+      <option value="2014">2014</option>
+      <option value="2015">2015</option>
+    </select>
+    <select name=Wheel ng-model="filter.Wheel">
+      <option value="Any">Any Wheel Type</option>
+      <option value="WT19">19" Wheel</option>
+      <option value="WT21">21" Turbine Light Non-Sport</option>
+      <option value="WTSS">21" Turbine Light Sport</option>
+      <option value="WTSP">21" Turbine Dark Non-Sport</option>
+      <option value="WTSG">21" Turbine Dark Sport</option>
+      <option value="WTTB">19" Turbine</option>
+      <option value="WTAE">19" Aero Wheel</option>
+    </select>
+    <select name=Roof ng-model="filter.Roof">
+      <option value="Any">Any Roof Type</option>
+      <option value="RFPO">Panoramic Roof</option>
+      <option value="RFBC">Body Color</option>
+      <option value="RFBK">Black Color Roof</option>
+      <option value="RFP2">Updated Panoramic Roof</option>
+    </select>
+    </div>
+    <div id="SecondRow">
+    <label id="Price_label">Max Price: {{filter.Price / 1000 | number:0}}k</label>
+    <input type="range" name="Price"  min="0" max="150000" step="1000"  style="width:250px" ng-model="filter.Price">
+    <label id="Mileage_label">Max Mileage: {{filter.Mileage/ 1000 | number:0}}k</label>
+    <input type="range" name="Mileage"  min="0" max="150000" step="1000" style="width:250px" ng-model="filter.Mileage">
+    </div>
+    <br>
+     <input type="Submit" value="Submit" ng-click="getCars()">
+     <input type="Submit" value="Reset" ng-click="reset()">
+    </form>
+    <script type="text/javascript">
+    function showMileage(newValue)
+    { 
+      label_text = newValue / 1000
+      document.getElementById("Mileage_label").innerHTML="Max Mileage: " + label_text + "k";
+
+    }
+    function showPrice(newValue)
+    { 
+      label_text = newValue / 1000
+      document.getElementById("Price_label").innerHTML="Max Price: " + label_text + "k";
+
+    }
+    </script>
+    <h4>{{numcars}} cars found</h4>
+    <table class = "table table-hover">
+    <tr >
+    <th> Pic </th>
+    <th> Id  </th>
+    <th> <a href="#" ng-click="sortType = 'Location'; sortReverse = !sortReverse"> Location
+          <span ng-show="sortType == 'Location' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'Location' && sortReverse" class="fa fa-caret-up"></span>
+          </a> 
+          </th>
+    <th> <a href="#" ng-click="sortType = 'Year'; sortReverse = !sortReverse"> Year
+          <span ng-show="sortType == 'Year' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'Year' && sortReverse" class="fa fa-caret-up"></span>
+          </a> 
+    </th>
+    <th> Model </th>
+    <th> <a href="#" ng-click="sortType = 'Price'; sortReverse = !sortReverse">
+          Price
+          <span ng-show="sortType == 'Price' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'Price' && sortReverse" class="fa fa-caret-up"></span>
+          </a> 
+    </th>
+    <th> <a href="#" ng-click="sortType = 'Mileage'; sortReverse = !sortReverse"> Mileage 
+          <span ng-show="sortType == 'Mileage' && !sortReverse" class="fa fa-caret-down"></span>
+          <span ng-show="sortType == 'Mileage' && sortReverse" class="fa fa-caret-up"></span>
+          </a> 
+    </th>
+    </tr>
+    <tbody>
+    
+    <tr ng-repeat="c in cars | orderBy:sortType:sortReverse">
+    <td><img src="{{c.Pic}}"/></td>
+    <td><a href="https://www.teslamotors.com/models/preowned/{{c.Id}}">{{c.Id}}</a></td>
+    <td>{{c.Location}}</td>
+    <td>{{c.Year}}</td>
+    <td>{{c.Model}}</td>
+    <td>{{c.Price | number : 0}}</td>
+    <td>{{c.Mileage | number : 0}}</td>
+    </tr>
+    </tbody>
+    </table>

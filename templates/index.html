@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h3> Welcome to the Tesla CPO Site </h3>
+<form method="get">
+<div id= "FirstRow">
+<select name=Model>
+	<option value="Any"{% if model == "Any" %}selected="selected"{% endif %}>Any Model</option>
+	<option value="BT60" {% if model == "BT60" %}selected="selected"{% endif %}>60 RWD</option>
+	<option value="BT70"{% if model == "BT70" %}selected="selected"{% endif %}>70 RWD</option>
+	<option value="BT70D"{% if model == "BT70D" %}selected="selected"{% endif %}>70 AWD</option>
+	<option value="BT85"{% if model == "BT85" %}selected="selected"{% endif %}>85 RWD</option>
+	<option value="BT85D"{% if model == "BT85D" %}selected="selected"{% endif %}>85 AWD</option>
+	<option value="BT90"{% if model == "BT90" %}selected="selected"{% endif %}>90 RWD</option>
+	<option value="BT90D"{% if model == "BT90D" %}selected="selected"{% endif %}>90 AWD</option>
+	<option value="PBT85"{% if model == "PBT85" %}selected="selected"{% endif %}>P85 RWD</option>
+	<option value="P85plus"{% if model == "P85plus" %}selected="selected"{% endif %}>P85+ RWD</option>
+	<option value="P85D"{% if model == "P85D" %}selected="selected"{% endif %}>P85 AWD</option>
+	<option value="P90D"{% if model == "P90D" %}selected="selected"{% endif %}>P90 AWD</option>
+</select>
+<select name=Location>
+	<option value="Any"{% if location== "Any" %}selected="selected"{% endif %}>Any Location</option>
+	<option value="Atlanta"{% if location== "Atlanta" %}selected="selected"{% endif %}>Atlanta</option>
+	<option value="Chicago"{% if location== "Chicago" %}selected="selected"{% endif %}>Chicago</option>
+	<option value="Florida"{% if location== "Florida" %}selected="selected"{% endif %}>Florida</option>
+	<option value="Hawaii"{% if location== "Hawaii" %}selected="selected"{% endif %}>Hawaii</option>
+	<option value="Los Angeles"{% if location== "Los Angeles" %}selected="selected"{% endif %}>Los Angeles</option>
+	<option value="New England"{% if location== "New England" %}selected="selected"{% endif %}>New England</option>
+	<option value="New York"{% if location== "New York" %}selected="selected"{% endif %}>New York</option>
+	<option value="Ohio"{% if location== "Ohio" %}selected="selected"{% endif %}>Ohio</option>
+	<option value="Orange County/San Diego"{% if location== "Orange County/San Diego" %}selected="selected"{% endif %}>Orange County/San Diego</option>
+	<option value="Pennsylvania"{% if location== "Pennsylvania" %}selected="selected"{% endif %}>Pennsylvania</option>
+	<option value="Rocky Mountains"{% if location== "Rocky Mountains" %}selected="selected"{% endif %}>Rocky Mountains</option>
+	<option value="San Francisco Bay Area"{% if location== "San Francisco Bay Area" %}selected="selected"{% endif %}>San Francisco Bay Area</option>
+	<option value="Seattle"{% if location== "Seattle" %}selected="selected"{% endif %}>Seattle</option>
+	<option value="Washington DC"{% if location== "Washington DC" %}selected="selected"{% endif %}>Washington DC</option>
+</select>
+<select name=Year>
+	<option value="Any"{% if year == "Any" %}selected="selected"{% endif %}>Any Year</option>
+	<option value="2012"{% if year == "2012" %}selected="selected"{% endif %}>2012</option>
+	<option value="2013"{% if year == "2013" %}selected="selected"{% endif %}>2013</option>
+	<option value="2014"{% if year == "2014" %}selected="selected"{% endif %}>2014</option>
+	<option value="2015"{% if year == "2015" %}selected="selected"{% endif %}>2015</option>
+</select>
+<select name=Wheel>
+	<option value=""{% if wheel == "Any" %}selected="selected"{% endif %}>Any Wheel Type</option>
+	<option value="WT19"{% if wheel == "WT19" %}selected="selected"{% endif %}>19" Wheel</option>
+	<option value="WT21"{% if wheel == "WT21" %}selected="selected"{% endif %}>21" Turbine Light Non-Sport</option>
+	<option value="WTSS"{% if wheel == "WTSS" %}selected="selected"{% endif %}>21" Turbine Light Sport</option>
+	<option value="WTSP"{% if wheel == "WTSP" %}selected="selected"{% endif %}>21" Turbine Dark Non-Sport</option>
+	<option value="WTSG"{% if wheel == "WTSG" %}selected="selected"{% endif %}>21" Turbine Dark Sport</option>
+	<option value="WTTB"{% if wheel == "WTTB" %}selected="selected"{% endif %}>19" Turbine</option>
+	<option value="WTAE"{% if wheel == "WTAE" %}selected="selected"{% endif %}>19" Aero Wheel</option>
+</select>
+<select name=Roof>
+	<option value="Any"{% if roof == "Any" %}selected="selected"{% endif %}>Any Roof Type</option>
+	<option value="RFPO"{% if roof == "RFPO" %}selected="selected"{% endif %}>Panoramic Roof</option>
+	<option value="RFBC"{% if roof == "RFBC" %}selected="selected"{% endif %}>Body Color</option>
+	<option value="RFBK"{% if roof == "RFBK" %}selected="selected"{% endif %}>Black Color Roof</option>
+	<option value="RFP2"{% if roof == "RFP2" %}selected="selected"{% endif %}>Updated Panoramic Roof</option>
+</select>
+</div>
+<div id="SecondRow">
+<label id="Price_label">Max Price: {{"{:.0f}".format(max_price / 1000)}}k</label>
+<input type="range"	name="Price" value={{max_price}} min="0" max="150000" step="1000" oninput="showPrice(this.value)" style="width:250px">
+<label id="Mileage_label">Max Mileage: {{"{:.0f}".format(max_mileage/1000)}}k</label>
+<input type="range"	name="Mileage" value={{max_mileage}} min="0" max="150000" step="1000" oninput="showMileage(this.value)" style="width:250px">
+</div>
+ <input type="Submit" value="Submit">
+</form>
+<script type="text/javascript">
+function showMileage(newValue)
+{ 
+	label_text = newValue / 1000
+	document.getElementById("Mileage_label").innerHTML="Max Mileage: " + label_text + "k";
+
+}
+function showPrice(newValue)
+{ 
+	label_text = newValue / 1000
+	document.getElementById("Price_label").innerHTML="Max Price: " + label_text + "k";
+
+}
+</script>
+{{logging}}
+{% if cars %}
+<h4>{{numcars}} cars found</h4>
+<table class = "table table-hover">
+<tr>
+<th> Pic </th>
+<th> Id  </th>
+<th> Location </th>
+<th> Year </th>
+<th> Model </th>
+<th> Price </th>
+<th> Mileage </th>
+</tr>
+<tbody>
+{% for c in cars %}
+<tr>
+<td><img src={{c.Pic}}/></td>
+<td><a href={{"https://www.teslamotors.com/models/preowned/" + c.Id}}>{{c.Id}}</a></td>
+<td>{{c.Location}}</td>
+<td>{{c.Year}}</td>
+<td>{{c.Model}}</td>
+<td>{{ "{:,.0f}".format(c.Price)}}</td>
+<td>{{ "{:,.0f}".format(c.Mileage)}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+{% else %}
+<div><h4> No cars found. </h4><div>
+{% endif %}
+{% endblock %}

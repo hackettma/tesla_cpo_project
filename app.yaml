@@ -1,0 +1,27 @@
+application: tesla-cpo
+version: 1
+runtime: python27
+api_version: 1
+threadsafe: yes
+
+handlers:
+- url: /css
+  static_dir: css
+
+- url: /js
+  static_dir: js
+
+- url: /img
+  static_dir: img
+
+- url: .*
+  script: tesla-cpo.app
+  secure: always
+
+libraries:
+- name: webapp2
+  version: "2.5.2"                                                               
+- name: jinja2                                                                  
+  version: latest                                                               
+- name: markupsafe                                                              
+  version: latest
