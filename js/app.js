@@ -8,6 +8,7 @@ angular.module('sortApp', [])
           'Model' : 'Any',
           'Location' : 'Any',
           'Year' : 'Any',
+          'Color' : 'Any',
           'Wheel' : 'Any',
           'Roof' : 'Any',
           'Mileage' : 30000,
@@ -16,9 +17,7 @@ angular.module('sortApp', [])
 
   
   $scope.reset = function() {
-    //console.log("Reset accessed");
     $scope.filter = angular.copy($scope.master);
-    //console.log("Reset accessed 2");
   };
 
   $scope.reset();
@@ -30,9 +29,6 @@ angular.module('sortApp', [])
   
 
      $http.get('/api', config).success(function(response){
-          //console.log(config)
-          //console.log("My data: "+ response);
-          
           $scope.cars = response;
           $scope.numcars = $scope.cars.length
       });

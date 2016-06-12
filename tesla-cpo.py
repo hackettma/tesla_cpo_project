@@ -179,7 +179,11 @@ class ShowCarsData(BaseHandler):
         year = self.request.get('Year')
         if year and year != "Any":
           q.filter("Year =", str(year))
-         
+        
+        color = self.request.get('Color')
+        if color and color != "Any":
+          q.filter("Paint =", color)
+
         location = str(replace(self.request.get('Location'), "+", " ")).replace("%2F", "/")
         if location and location != "Any":
           q.filter("Location =", location)
@@ -320,8 +324,8 @@ class EditCars(BaseHandler):
 app = webapp2.WSGIApplication([ ('/?(?:.json)?', ShowCarsAlt),
                                 ('/api/?(?:.json)?', ShowCarsData),
                                 ('/add?(?:.json)?', AddCars),
-                                ('/edit?(?:.json)?', EditCars),
-                                ('/signup', Signup) 
+                                ('/edit?(?:.json)?', EditCars)
+                                #('/signup', Signup) 
                                 ], debug=True)
 
 

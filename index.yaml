@@ -118,6 +118,19 @@ indexes:
 
 - kind: Cars
   properties:
+  - name: Paint
+  - name: Status
+  - name: Mileage
+
+- kind: Cars
+  properties:
+  - name: Paint
+  - name: Status
+  - name: Wheel
+  - name: Mileage
+
+- kind: Cars
+  properties:
   - name: Roof
   - name: Status
   - name: Mileage
